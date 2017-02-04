@@ -10,8 +10,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.saff.sociallyawkwardfriendfinder.MainActivity">
 
-    <TextView
+    <EditText
+        android:id="@+id/name_of_event"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        style="@style/Widget.AppCompat.EditText"
+        android:hint="Name of the Event"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/find_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_centerHorizontal="true"
+        android:text="Find"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/name_of_event"/>
+
+    <ImageButton
+        android:id="@+id/camera_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camera_add"
+        android:layout_below="@+id/find_button"
+        android:layout_marginTop="134dp"
+        android:contentDescription="camera"/>
+
+    <ImageButton
+        android:id="@+id/profile_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/profile_pic"
+        android:layout_alignTop="@+id/camera_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="profile"/>
+
 </RelativeLayout>
