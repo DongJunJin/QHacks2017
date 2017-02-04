@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SAFF</string>
+    <string name="Male">Male</string>
+    <string name="Female">Female</string>
+    <string name="Other">Other</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>
