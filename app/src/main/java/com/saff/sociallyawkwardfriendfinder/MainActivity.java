@@ -15,40 +15,65 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.util.Size;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    ImageButton cameraButton = (ImageButton) findViewById(R.id.camera_button);
-    ImageButton profileButton = (ImageButton) findViewById(R.id.profile_button);
-    Button findButton = (Button) findViewById(R.id.find_button);
+    ImageButton cameraButton;
+    ImageButton profileButton;
+    Button findButton;
+    String first_name, last_name, gender, Unique_ID;
+    Bundle info = getIntent().getExtras();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+        cameraButton = (ImageButton) findViewById(R.id.camera_button);
+        profileButton = (ImageButton) findViewById(R.id.profile_button);
+        findButton = (Button) findViewById(R.id.find_button);
 
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        if (cameraButton.callOnClick()) {
-            UseCamera();
-        }
+            }
+        });
 
-        if(profileButton.callOnClick()){
-            Intent intent = new Intent(this, ProfilePage.class);
-            startActivity(intent);
-        }
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
+                startActivity(intent);
+            }
+        });
 
-        if(findButton.callOnClick()){
-            //TODO CONDITION IF PROFILE AND IMG EXISTS
-            search();
-        }
+        findButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search();
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        getProfile();
     }
 
     void UseCamera(){
@@ -57,38 +82,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void cameraPermission(){
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
+    }
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
+    private void search(){
+        if(first_name.isEmpty() || last_name.isEmpty() || gender.isEmpty()){
+            createProfile();
+        }
+        Toast toast = Toast.makeText(getApplicationContext(), "Search Cant Be done",
+                Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+    private void getProfile(){
+        first_name = info.getString("First Name");
+        last_name = info.getString("Last Name");
+        gender = info.getString("Gender");
+        Unique_ID = info.getString("UUID");
 
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA}, 1);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+        {
+            Log.i("First Name", first_name);
+            Log.i("Last Name", last_name);
+            Log.i("Gender", gender);
+            Log.i("UUID", Unique_ID);
         }
     }
 
-    void search(){
+    private void createProfile(){
+        JSONObject profile = new JSONObject();
+        try{
+            profile.put("UUID", Unique_ID);
+            profile.put("First Name", first_name);
+            profile.put("Last Name", last_name);
+            profile.put("Gender", gender);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
 
     }
-
-    private CameraDevice cameraDevice;
-    private CaptureRequest.Builder previewBuilder;
-    private CameraCaptureSession previewSession;
-
 }

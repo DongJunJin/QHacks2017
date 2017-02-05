@@ -12,19 +12,15 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import java.util.UUID;
 
-/**
- * Created by andrew on 2/4/17.
- */
-
 public class ProfilePage extends Activity {
 
-    EditText first_name = (EditText) findViewById(R.id.first_name);
-    EditText last_name = (EditText) findViewById(R.id.last_name);
-    RadioGroup genderChoice = (RadioGroup) findViewById(R.id.radioButtons);
-    Button submit = (Button) findViewById(R.id.submit_button);
-    int selectedID = genderChoice.getCheckedRadioButtonId();
-    RadioButton radioButton = (RadioButton) findViewById(selectedID);
-    Intent intent = new Intent(this, MainActivity.class);
+    EditText first_name;
+    EditText last_name;
+    RadioGroup genderChoice;
+    Button submit;
+    int selectedID;
+    RadioButton radioButton;
+    Intent intent = new Intent(this,MainActivity.class);
     Bundle inform = new Bundle();
     UUID uniqueID;
     String temp;
@@ -34,31 +30,50 @@ public class ProfilePage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_page);
 
+        first_name = (EditText) findViewById(R.id.first_name);
+        last_name = (EditText) findViewById(R.id.last_name);
+        genderChoice = (RadioGroup) findViewById(R.id.radioButtons);
+        submit = (Button) findViewById(R.id.submit_button);
+        radioButton = (RadioButton) findViewById(selectedID);
+        selectedID = genderChoice.getCheckedRadioButtonId();
+
+
         genderChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 temp = (String) radioButton.getText();
+                Log.i("Radio Value", temp);
             }
         });
 
-        if(submit.callOnClick()) {
-            if (isEmpty(first_name) || (isEmpty(last_name)) ||
-                    genderChoice.getCheckedRadioButtonId() == -1) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Please Complete The Fields.", Toast.LENGTH_SHORT);
-                toast.show();
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                {
+                    if (isEmpty(first_name) || (isEmpty(last_name)) ||
+                            genderChoice.getCheckedRadioButtonId() == -1) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Please Complete The Fields.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    else{
+                        onStop();
+                        startActivity(intent);
+                    }
+                }
             }
-            else{
-                onStop();
-                startActivity(intent);
-            }
-        }
+        });
     }
 
     @Override
     protected void onStop(){
         super.onStop();
         infoPass();
+
+    }
+
+    @Override
+    public void onBackPressed(){
 
     }
 
@@ -74,10 +89,11 @@ public class ProfilePage extends Activity {
     }
 
     private void infoPass(){
-        if(uniqueID.toString().length() == 0){
-            uniqueID = UUID.randomUUID();
-        }
+//        if(uniqueID.toString().length() == 0){
+//            uniqueID = UUID.randomUUID();
+//        }
 
+        uniqueID = UUID.randomUUID();
         String ids = uniqueID.toString();
         String fn = first_name.toString();
         String ln = last_name.toString();
@@ -94,5 +110,6 @@ public class ProfilePage extends Activity {
     private void infoStore(){
         first_name.setText(inform.getString("First Name"));
         last_name.setText(inform.getString("Last Name"));
+        //TODO SET RADIO BUTTON TO GENDER TYPE
     }
 }
