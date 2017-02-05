@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:hint="@string/first_name"/>
+        android:hint="@string/first_name"
+        android:textAlignment="center"/>
 
     <EditText
         android:layout_below="@id/first_name"
@@ -15,9 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:hint="@string/last_name"/>
+        android:hint="@string/last_name"
+        android:textAlignment="center"/>
 
-    <LinearLayout
+    <RadioGroup
         android:layout_below="@id/last_name"
         android:id="@+id/radioButtons"
         android:layout_width="wrap_content"
@@ -39,18 +41,18 @@
 
         <RadioButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:text="@string/Other"
             android:id="@+id/otherRadio"/>
 
-    </LinearLayout>
+    </RadioGroup>
 
     <Button
         android:id="@+id/submit_button"
         android:layout_below="@id/radioButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="@string/submit"
         android:layout_marginTop="70dp"
         android:layout_centerHorizontal="true"/>
 

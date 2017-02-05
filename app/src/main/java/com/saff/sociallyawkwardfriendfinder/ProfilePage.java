@@ -1,10 +1,16 @@
 package com.saff.sociallyawkwardfriendfinder;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import java.util.UUID;
 
 /**
  * Created by andrew on 2/4/17.
@@ -12,18 +18,81 @@ import android.widget.RadioButton;
 
 public class ProfilePage extends Activity {
 
-    EditText first_name;
-    EditText last_name;
-    RadioButton Gender;
-    Button submit;
+    EditText first_name = (EditText) findViewById(R.id.first_name);
+    EditText last_name = (EditText) findViewById(R.id.last_name);
+    RadioGroup genderChoice = (RadioGroup) findViewById(R.id.radioButtons);
+    Button submit = (Button) findViewById(R.id.submit_button);
+    int selectedID = genderChoice.getCheckedRadioButtonId();
+    RadioButton radioButton = (RadioButton) findViewById(selectedID);
+    Intent intent = new Intent(this, MainActivity.class);
+    Bundle inform = new Bundle();
+    UUID uniqueID;
+    String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_page);
 
+        genderChoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                temp = (String) radioButton.getText();
+            }
+        });
+
+        if(submit.callOnClick()) {
+            if (isEmpty(first_name) || (isEmpty(last_name)) ||
+                    genderChoice.getCheckedRadioButtonId() == -1) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Please Complete The Fields.", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else{
+                onStop();
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        infoPass();
 
     }
 
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        //TODO WHEN ACTIVITY IS CALLED AGAIN RETURN THE FIELD VALUES
+        infoStore();
+    }
 
+    private boolean isEmpty(EditText texty){
+        return texty.getText().toString().trim().length() == 0;
+    }
+
+    private void infoPass(){
+        if(uniqueID.toString().length() == 0){
+            uniqueID = UUID.randomUUID();
+        }
+
+        String ids = uniqueID.toString();
+        String fn = first_name.toString();
+        String ln = last_name.toString();
+        String gen = radioButton.getText().toString();
+
+        inform.putString("UUID", ids);
+        inform.putString("First Name", fn);
+        inform.putString("Last Name", ln);
+        Log.i("Gender", gen);
+        inform.putString("Gender", gen);
+        intent.putExtras(inform);
+    }
+
+    private void infoStore(){
+        first_name.setText(inform.getString("First Name"));
+        last_name.setText(inform.getString("Last Name"));
+    }
 }
