@@ -57,8 +57,8 @@ public class ProfilePage extends Activity {
                         toast.show();
                     }
                     else{
-                        onStop();
                         startActivity(intent);
+                        infoPass();
                     }
                 }
             }
@@ -69,7 +69,6 @@ public class ProfilePage extends Activity {
     protected void onStop(){
         super.onStop();
         infoPass();
-
     }
 
     @Override
@@ -97,7 +96,15 @@ public class ProfilePage extends Activity {
         String ids = uniqueID.toString();
         String fn = first_name.toString();
         String ln = last_name.toString();
-        String gen = radioButton.getText().toString();
+        String gen = "NULL";
+
+        if(genderChoice.getCheckedRadioButtonId()!=-1){
+            int id= genderChoice.getCheckedRadioButtonId();
+            View radioButton = genderChoice.findViewById(id);
+            int radioId = genderChoice.indexOfChild(radioButton);
+            RadioButton btn = (RadioButton) genderChoice.getChildAt(radioId);
+            gen = (String) btn.getText();
+        }
 
         inform.putString("UUID", ids);
         inform.putString("First Name", fn);
@@ -108,8 +115,8 @@ public class ProfilePage extends Activity {
     }
 
     private void infoStore(){
-        first_name.setText(inform.getString("First Name"));
-        last_name.setText(inform.getString("Last Name"));
+        first_name.setText(first_name.toString());
+        last_name.setText(first_name.toString());
         //TODO SET RADIO BUTTON TO GENDER TYPE
     }
 }

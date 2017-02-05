@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton profileButton;
     Button findButton;
     String first_name, last_name, gender, Unique_ID;
-    Bundle info = getIntent().getExtras();
+    Intent intent;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         cameraButton = (ImageButton) findViewById(R.id.camera_button);
         profileButton = (ImageButton) findViewById(R.id.profile_button);
         findButton = (Button) findViewById(R.id.find_button);
+        intent = new Intent();
+        bundle = intent.getExtras();
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart(){
         super.onRestart();
-        getProfile();
+        getProfile(bundle);
     }
 
     void UseCamera(){
@@ -93,11 +96,11 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    private void getProfile(){
-        first_name = info.getString("First Name");
-        last_name = info.getString("Last Name");
-        gender = info.getString("Gender");
-        Unique_ID = info.getString("UUID");
+    private void getProfile(Bundle bundle){
+        first_name = bundle.getString("First Name");
+        last_name = bundle.getString("Last Name");
+        gender = bundle.getString("Gender");
+        Unique_ID = bundle.getString("UUID");
 
         {
             Log.i("First Name", first_name);
